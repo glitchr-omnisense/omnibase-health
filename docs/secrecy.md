@@ -40,7 +40,7 @@ fail closed without their key.
 ## The staff's second factor
 
 Whoever reads patients' data signs in with more than a password. The application requires a second
-factor of the staff's role through glitchr/omnibase (its `docs/20-architecture/account-security.md`):
+factor of the staff's role through omniscient/omnibase (its `docs/20-architecture/account-security.md`):
 
 ```yaml
 # config/packages/base.yaml
