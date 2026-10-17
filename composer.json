@@ -29,7 +29,7 @@
     "suggest": {
         "omnibase/admin": "The back office: patients, home care requests, the access log, the widgets",
         "omnibase/mailbox": "Patients write to the secretariat or to their practitioner (desks), attachments in the vault",
-        "glitchr/omnistate": "With omnistate/annuaire-sante: the team read from the RPPS",
+        "omniscient/omnistate": "With omnistate/annuaire-sante: the team read from the RPPS",
         "drenso/symfony-oidc-bundle": "FranceConnect for patients, Pro Santé Connect for practitioners; the IdentityLink entity keeps who is who by sub"
     },
     "autoload": {
