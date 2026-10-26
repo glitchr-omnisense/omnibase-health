@@ -112,7 +112,7 @@ declared, and the reminder that the built-in video is not ANS-listed.
 
 ## Demonstration accounts
 
-In omniscient/omnibase's `demo` environment (its `docs/20-architecture/demo.md`) the sign-in page offers
+In omnisense/omnibase's `demo` environment (its `docs/20-architecture/demo.md`) the sign-in page offers
 one button for each role of a practice. `Base\Health\Demo\HealthDemoAccounts` declares them:
 
 | Identifier | Role | |

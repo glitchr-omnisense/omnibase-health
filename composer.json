@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "The health regime on omnibase/office: a practice (multi-professional, nursing, physiotherapy...), its practitioners read from the RPPS, patients and their dependants, home care requests, fees, results sent through the encrypted vault, medical secrecy in who may read what, the emergency banner, GDPR export.",
     "keywords": ["symfony", "omnibase", "health", "maison de santé", "cabinet infirmier", "rpps", "teleconsultation", "patients"],
-    "homepage": "https://github.com/glitchr-studio/omnibase-health",
+    "homepage": "https://github.com/glitchr-omnisense/omnibase-health",
     "license": "MIT",
     "authors": [
         {
@@ -15,7 +15,7 @@
         "php": "^8.2",
         "doctrine/orm": "^2.15|^3.0",
         "omnibridge/symfony": "1.x-dev",
-        "omniscient/omnibase": "3.0.*-dev || 4.0.*-dev",
+        "omnisense/omnibase": "3.0.*-dev || 4.0.*-dev",
         "omnibase/office": "dev-main",
         "symfony/config": "^6.4|^7.0|^8.0",
         "symfony/console": "^6.4|^7.0|^8.0",
@@ -30,7 +30,7 @@
     "suggest": {
         "omnibase/admin": "The back office: patients, home care requests, the access log, the widgets",
         "omnibase/mailbox": "Patients write to the secretariat or to their practitioner (desks), attachments in the vault",
-        "omniscient/omnistate": "With omnistate/annuaire-sante: the team read from the RPPS",
+        "omnisense/omnistate": "With omnistate/annuaire-sante: the team read from the RPPS",
         "drenso/symfony-oidc-bundle": "FranceConnect for patients, Pro Santé Connect for practitioners; the IdentityLink entity keeps who is who by sub"
     },
     "autoload": {

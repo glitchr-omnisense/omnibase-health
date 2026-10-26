@@ -1,6 +1,6 @@
 # omnibase/health
 
-The health regime on [omnibase/office](https://github.com/glitchr-studio/omnibase-office): the site of a
+The health regime on [omnibase/office](https://github.com/glitchr-omnisense/omnibase-office): the site of a
 practice of care - a multi-professional health centre, a nursing practice, a physiotherapist, a midwife.
 
 - `Practice` (its kind, FINESS, what to do out of hours) and `Practitioner` (profession, agreement
