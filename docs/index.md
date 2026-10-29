@@ -5,11 +5,31 @@ order: 1
 
 # omnibase/health
 
+omnibase/health is a health practice's site on omnibase/office - a
+multiprofessional practice (MSP), a health centre, a nursing or
+physiotherapy practice, a midwife: the team with its fees, appointments, care at home, the patients'
+space and their data, medical secrecy applied to the documents, the
+emergency numbers on every page. Its namespace is `Base\Health\`. Nothing in
+it is written for one profession only.
+
+## Requirements
+
+- PHP 8.2 or later; doctrine/orm 2.15 or 3;
+- omnisense/omnibase 3.0 or 4.0, omnibridge/symfony 1.x, omnibase/office;
+- Symfony 6.4, 7 or 8 (config, console, dependency-injection, form,
+  http-kernel, security-bundle).
+
+Suggested: omnibase/admin (the back office), omnibase/mailbox (patients write
+to the secretariat or their practitioner), omnisense/omnistate with
+omnistate/annuaire-sante (the team read from the RPPS),
+drenso/symfony-oidc-bundle (FranceConnect, Pro Santé Connect). The messages
+are in French only (domain `health`).
+
 ## Installation
 
 ```sh
 composer require omnibase/health          # brings omnibase/office
-composer require omnibase/mailbox glitchr/omnistate omnistate/annuaire-sante   # suggested
+composer require omnibase/mailbox omnisense/omnistate omnistate/annuaire-sante   # suggested
 ```
 
 ```php
@@ -144,4 +164,4 @@ takes an operator and a CPS card; the contract is there, no implementation.
 
 ## More
 
-[Medical secrecy](secrecy.md) · [Home care](home-care.md) · [Patients' data](patients-data.md) · [Identity](identity.md)
+[Concepts](concepts.md) · [Medical secrecy](secrecy.md) · [Home care](home-care.md) · [Patients' data](patients-data.md) · [Identity](identity.md) · [The back office](back-office.md) · [Configuration reference](configuration.md) · [Testing](testing.md)

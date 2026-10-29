@@ -1,6 +1,6 @@
 ---
 title: Medical secrecy
-order: 2
+order: 30
 ---
 
 # Medical secrecy, as the tool applies it
