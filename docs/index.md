@@ -15,7 +15,7 @@ it is written for one profession only.
 ## Requirements
 
 - PHP 8.2 or later; doctrine/orm 2.15 or 3;
-- omnisense/omnibase 3.0 or 4.0, omnibridge/symfony 1.x, omnibase/office;
+- omnisense/omnibase 3.0, 4.0 or 5.0, omnibridge/symfony 1.x, omnibase/office;
 - Symfony 6.4, 7 or 8 (config, console, dependency-injection, form,
   http-kernel, security-bundle).
 
