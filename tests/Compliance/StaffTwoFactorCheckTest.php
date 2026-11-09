@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 
 /**
- * The staff's second factor is glitchr/omnibase's rule
+ * The staff's second factor is omnisense/omnibase's rule
  * (base.security.two_factor.required_roles): the check says it is missing
  * while nothing requires it of the staff, counts the staff accounts that
  * have none yet, and is satisfied once each has one.

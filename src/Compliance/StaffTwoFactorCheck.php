@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 /**
  * Every staff account signs in with a second factor: the application requires
- * it of the staff's role through glitchr/omnibase
+ * it of the staff's role through omnisense/omnibase
  * (base.security.two_factor.required_roles: [ROLE_STAFF], postpone: false -
  * docs/secrecy.md), which sends an account without one to its enrolment page.
  * Missing while nothing requires it; a warning while accounts have none yet.

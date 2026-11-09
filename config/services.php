@@ -40,7 +40,7 @@ return function (ContainerConfigurator $configurator) {
         $services->load('Base\\Health\\Admin\\', $src.'/Admin/');
     }
 
-    // The demonstration accounts of a practice, when the installed glitchr/omnibase has the demo environment.
+    // The demonstration accounts of a practice, when the installed omnisense/omnibase has the demo environment.
     if (interface_exists('Base\\Demo\\DemoAccountProviderInterface')) {
         $services->load('Base\\Health\\Demo\\', $src.'/Demo/');
     }

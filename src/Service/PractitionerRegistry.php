@@ -10,7 +10,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * "Lire l'Annuaire Santé": a practitioner read from the ANS's directory by
- * their RPPS number (glitchr/omnistate with omnistate/annuaire-sante), their
+ * their RPPS number (omnisense/omnistate with omnistate/annuaire-sante), their
  * profession and MSSanté address written on the record. The key is the one
  * typed in the back office (API keys) if there is one, else the
  * configuration's (omnistate.annuaire_sante.api_key).

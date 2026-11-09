@@ -6,7 +6,7 @@ use Base\Demo\DemoAccount;
 use Base\Demo\DemoAccountProviderInterface;
 
 /**
- * The demonstration accounts of a practice (glitchr/omnibase's `demo`
+ * The demonstration accounts of a practice (omnisense/omnibase's `demo`
  * environment): one for each role this bundle and omnibase/office know, with
  * the identifiers the practices' fixtures have always used. The roles of the
  * staff come from two groups, as in a real practice - "Praticiens"
@@ -20,7 +20,7 @@ use Base\Demo\DemoAccountProviderInterface;
  * appointments to the patients. A practice without one of these roles (a
  * nursing practice has no physician) leaves it out: base.demo.exclude.
  *
- * Registered when the installed glitchr/omnibase has the demo environment
+ * Registered when the installed omnisense/omnibase has the demo environment
  * (config/services.php).
  */
 final class HealthDemoAccounts implements DemoAccountProviderInterface

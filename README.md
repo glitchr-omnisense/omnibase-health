@@ -5,7 +5,7 @@ practice of care - a multi-professional health centre, a nursing practice, a phy
 
 - `Practice` (its kind, FINESS, what to do out of hours) and `Practitioner` (profession, agreement
   with the health insurance, Carte Vitale, MSSanté address), read from the Annuaire Santé by RPPS
-  number (`glitchr/omnistate` + `omnistate/annuaire-sante`);
+  number (`omnisense/omnistate` + `omnistate/annuaire-sante`);
 - patients: `PatientProfile`, their `Dependent`s, the patient's space (`/espace`), their data to take
   away or to have erased;
 - care at home: a request checked against the service areas, accepted as a series of visits;
