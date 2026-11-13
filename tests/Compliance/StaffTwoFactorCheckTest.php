@@ -20,6 +20,13 @@ use Symfony\Component\Security\Core\Role\RoleHierarchy;
  */
 final class StaffTwoFactorCheckTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (!class_exists(User::class)) {
+            self::markTestSkipped('Needs a host application\'s App\\Entity\\User (omnibase\'s class aliases, the harness).');
+        }
+    }
+
     public function testMissingWhileNothingRequiresItOfTheStaff(): void
     {
         $result = $this->check(requiredRoles: [], accounts: [$this->account(['ROLE_PRACTITIONER'], false)])->check();

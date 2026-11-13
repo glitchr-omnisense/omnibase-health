@@ -21,8 +21,37 @@ No e-mail ever holds health data, not even a document's title or an appointment'
 It is not a medical record, a billing tool (no SESAM-Vitale), nor a teleconsultation solution listed
 by the ANS.
 
+## Installation
+
 ```sh
-composer require omnibase/health
+composer require omnibase/health          # brings omnibase/office, omnisense/omnibase 5.1 and omnibridge/symfony
 ```
+
+Under Symfony, enable the bundles and import the pages:
+
+```php
+// config/bundles.php
+Base\Office\OfficeBundle::class => ['all' => true],
+Base\Health\HealthBundle::class => ['all' => true],
+```
+
+```yaml
+# config/routes.yaml - after omnibase/office's
+health_controller:
+    resource: "@HealthBundle/src/Controller/Client"
+    type: attribute
+health_admin_controller:
+    resource: "@HealthBundle/src/Controller/Admin"
+    type: attribute
+```
+
+Then a migration (`bin/console make:migration`, 7 tables prefixed `health_`) and the roles of
+[docs/index.md](docs/index.md#installation) in `security.yaml`.
+
+## First use
+
+Open `/urgences`: the emergency numbers (15, 112, 114, 3237, 116 117, from `health.emergency`) that
+the banner also shows on every page. Add a practitioner in the back office (omnibase/admin) and
+`/tarifs` lists the fees displayed; [docs/configuration.md](docs/configuration.md) gives every key.
 
 Documentation: [docs/](docs/index.md). License: MIT since 2026-10-09; earlier versions remain published under LGPL-3.0-or-later.
