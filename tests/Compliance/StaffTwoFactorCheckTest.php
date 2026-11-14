@@ -9,6 +9,7 @@ use Base\Service\SecurityPolicy;
 use Base\Service\SettingBagInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use Omnibridge\Symfony\Contract\HierarchyRoles;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 
@@ -91,7 +92,7 @@ final class StaffTwoFactorCheckTest extends TestCase
         $entityManager = $this->createStub(EntityManagerInterface::class);
         $entityManager->method('getRepository')->willReturn($repository);
 
-        return new StaffTwoFactorCheck($entityManager, new SecurityPolicy($settings, $hierarchy, $requiredRoles, false), $hierarchy);
+        return new StaffTwoFactorCheck($entityManager, new SecurityPolicy($settings, new HierarchyRoles($hierarchy), $requiredRoles, false), $hierarchy);
     }
 
     /** @param list<string> $roles */

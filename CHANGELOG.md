@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+## [1.0.2] — 2026-11-14
+
+### Changed
+- Accepts omnisense/omnibase 6.0 beside 5.1: `omnisense/omnibase` `^5.1 || ^6.0` and `omnibridge/symfony` `^1.1 || ^2.0`. The same code runs on both lines.
+- Tests: StaffTwoFactorCheckTest gives `SecurityPolicy` omnibridge/symfony's `HierarchyRoles` (the `Roles` contract)
+  over Symfony's role hierarchy, which 6.0 no longer takes.
+
 ## [1.0.1] — 2026-11-14
 
 ### Changed
