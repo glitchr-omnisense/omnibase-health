@@ -5,7 +5,7 @@ namespace Base\Health\Entity;
 use Base\Health\Enum\PracticeType;
 use Base\Health\Repository\PracticeRepository;
 use Base\Office\Entity\Office;
-use Doctrine\ORM\Mapping as ORM;
+use Base\Mapping as ORM;
 
 /**
  * The practice of care an office is: its kind (a multi-professional

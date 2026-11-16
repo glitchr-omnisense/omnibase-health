@@ -4,7 +4,7 @@ namespace Base\Health\Service;
 
 use Base\Health\Repository\PatientProfileRepository;
 use Base\Office\Event\AppointmentEvent;
-use Doctrine\ORM\EntityManagerInterface;
+use Base\Contract\UnitOfWork;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 /**
@@ -14,7 +14,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
  */
 final class AppointmentNaming
 {
-    public function __construct(private readonly PatientProfileRepository $profiles, private readonly EntityManagerInterface $entityManager)
+    public function __construct(private readonly PatientProfileRepository $profiles, private readonly UnitOfWork $unitOfWork)
     {
     }
 
@@ -28,6 +28,6 @@ final class AppointmentNaming
                 $appointment->setClientName($profile->getFullName())->setClientPhone($appointment->getClientPhone() ?? $profile->getPhone())->setMetaValue('named', true);
             }
         }
-        $this->entityManager->flush();
+        $this->unitOfWork->flush();
     }
 }

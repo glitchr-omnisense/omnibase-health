@@ -6,7 +6,7 @@ use App\Entity\User;
 use Base\Office\Compliance\ComplianceCheckInterface;
 use Base\Office\Compliance\ComplianceResult;
 use Base\Service\SecurityPolicy;
-use Doctrine\ORM\EntityManagerInterface;
+use Base\Database\Repository\Repositories;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
@@ -19,7 +19,7 @@ use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
  */
 final class StaffTwoFactorCheck implements ComplianceCheckInterface
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager, private readonly SecurityPolicy $policy, private readonly RoleHierarchyInterface $roles, #[Autowire('%health.roles.staff%')] private readonly string $staffRole = 'ROLE_STAFF')
+    public function __construct(private readonly Repositories $repositories, private readonly SecurityPolicy $policy, private readonly RoleHierarchyInterface $roles, #[Autowire('%health.roles.staff%')] private readonly string $staffRole = 'ROLE_STAFF')
     {
     }
 
@@ -29,7 +29,7 @@ final class StaffTwoFactorCheck implements ComplianceCheckInterface
             return new ComplianceResult('compliance.staff_2fa', ComplianceResult::MISSING, 'compliance.staff_2fa_off', 'health', ['role' => $this->staffRole]);
         }
         $without = 0;
-        foreach ($this->entityManager->getRepository(User::class)->findAll() as $user) {
+        foreach ($this->repositories->of(User::class)->findAll() as $user) {
             if (\in_array($this->staffRole, $this->roles->getReachableRoleNames($user->getRoles()), true) && !$this->policy->hasSecondFactor($user)) {
                 ++$without;
             }

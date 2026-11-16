@@ -3,15 +3,15 @@
 namespace Base\Health\Repository;
 
 use Base\Health\Entity\IdentityLink;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Base\Database\Repository\ServiceEntityRepository;
+use Base\Database\Repository\Finders;
 
 /** @extends ServiceEntityRepository<IdentityLink> */
 class IdentityLinkRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(Finders $finders)
     {
-        parent::__construct($registry, IdentityLink::class);
+        parent::__construct($finders, IdentityLink::class);
     }
 
     public function findOneBySub(string $provider, string $sub): ?IdentityLink

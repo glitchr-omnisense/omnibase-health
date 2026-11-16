@@ -4,7 +4,7 @@ namespace Base\Health\Entity;
 
 use App\Entity\User;
 use Base\Health\Repository\IdentityLinkRepository;
-use Doctrine\ORM\Mapping as ORM;
+use Base\Mapping as ORM;
 
 /**
  * Whose account an identity of FranceConnect or Pro Santé Connect is: the

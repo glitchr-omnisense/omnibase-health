@@ -3,15 +3,15 @@
 namespace Base\Health\Repository;
 
 use Base\Health\Entity\Practitioner;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Base\Database\Repository\ServiceEntityRepository;
+use Base\Database\Repository\Finders;
 
 /** @extends ServiceEntityRepository<Practitioner> */
 class PractitionerRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(Finders $finders)
     {
-        parent::__construct($registry, Practitioner::class);
+        parent::__construct($finders, Practitioner::class);
     }
 
     public function findOneByMember(?object $member): ?Practitioner
@@ -21,18 +21,18 @@ class PractitionerRepository extends ServiceEntityRepository
 
     public function findOneByUser(?object $user): ?Practitioner
     {
-        return null === $user ? null : $this->createQueryBuilder('p')->innerJoin('p.member', 'm')->andWhere('m.user = :user')->setParameter('user', $user)->setMaxResults(1)->getQuery()->getOneOrNullResult();
+        return null === $user ? null : $this->findOneBy(['member.user' => $user]);
     }
 
     /** By RPPS number: how Pro Santé Connect names a practitioner. */
     public function findOneByRpps(string $rpps): ?Practitioner
     {
-        return $this->createQueryBuilder('p')->innerJoin('p.member', 'm')->andWhere('m.registryId = :rpps')->setParameter('rpps', $rpps)->setMaxResults(1)->getQuery()->getOneOrNullResult();
+        return $this->findOneBy(['member.registryId' => $rpps]);
     }
 
     /** @return list<Practitioner> the practice's physicians, for "médecin traitant" */
     public function findPhysicians(): array
     {
-        return $this->createQueryBuilder('p')->innerJoin('p.member', 'm')->andWhere("p.professionCode = '10'")->andWhere('m.active = true')->orderBy('m.position', 'ASC')->getQuery()->getResult();
+        return $this->findBy(['professionCode' => '10', 'member.active' => true], ['member.position' => 'ASC']);
     }
 }

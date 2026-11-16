@@ -19,7 +19,7 @@ use Base\Office\Repository\Booking\AppointmentTypeRepository;
 use Base\Office\Repository\Booking\ServiceAreaRepository;
 use Base\Office\Repository\MemberRepository;
 use Base\Office\Share\DocumentVault;
-use Doctrine\ORM\EntityManagerInterface;
+use Base\Contract\UnitOfWork;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +34,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class HealthController extends AbstractController
 {
-    public function __construct(private readonly PracticeRepository $practices, private readonly TranslatorInterface $translator, private readonly EntityManagerInterface $entityManager)
+    public function __construct(private readonly PracticeRepository $practices, private readonly TranslatorInterface $translator, private readonly UnitOfWork $unitOfWork)
     {
     }
 
@@ -78,7 +78,7 @@ class HealthController extends AbstractController
                 if ($file instanceof UploadedFile && $file->isValid()) {
                     try {
                         $care->setPrescription($vault->deposit($file, $user, $user, $this->translator->trans('home_care.prescription_title', [], 'health'), DocumentKind::PRESCRIPTION, context: 'health:home_care:'.$care->getId()));
-                        $this->entityManager->flush();
+                        $this->unitOfWork->flush();
                     } catch (ShareException|KeyMissingException) {
                         $this->addFlash('warning', $this->translator->trans('home_care.flash.prescription_failed', [], 'health'));
                     }
@@ -86,7 +86,7 @@ class HealthController extends AbstractController
                 $profile = $profiles->of($user);
                 if (null === $profile->getStreet()) {
                     $profile->setStreet($care->getStreet())->setPostalCode($care->getPostalCode())->setCity($care->getCity());
-                    $this->entityManager->flush();
+                    $this->unitOfWork->flush();
                 }
                 $this->addFlash('success', $this->translator->trans('home_care.flash.sent', [], 'health'));
 

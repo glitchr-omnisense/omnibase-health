@@ -17,7 +17,7 @@ use Base\Office\Exception\BookingException;
 use Base\Office\Repository\Booking\AppointmentTypeRepository;
 use Base\Office\Repository\Booking\ServiceAreaRepository;
 use Base\Office\Share\Cipher;
-use Doctrine\ORM\EntityManagerInterface;
+use Base\Contract\UnitOfWork;
 
 /**
  * Care at home, from the request to the agenda. A request is checked
@@ -29,7 +29,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class HomeCare
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
+        private readonly UnitOfWork $unitOfWork,
         private readonly ServiceAreaRepository $areas,
         private readonly AppointmentTypeRepository $types,
         private readonly Booker $booker,
@@ -80,8 +80,8 @@ class HomeCare
             throw new HomeCareException('home_care.error.dates');
         }
 
-        $this->entityManager->persist($request);
-        $this->entityManager->flush();
+        $this->unitOfWork->persist($request);
+        $this->unitOfWork->flush();
 
         return $request;
     }
@@ -117,7 +117,7 @@ class HomeCare
         );
 
         $request->setStatus(CareStatus::ACCEPTED)->setAssignedTo($member)->setSeries($appointments[0]->getSeries());
-        $this->entityManager->flush();
+        $this->unitOfWork->flush();
 
         return $appointments;
     }
@@ -126,7 +126,7 @@ class HomeCare
     {
         if ($request->isPending()) {
             $request->setStatus(CareStatus::REFUSED);
-            $this->entityManager->flush();
+            $this->unitOfWork->flush();
         }
     }
 
@@ -134,7 +134,7 @@ class HomeCare
     {
         if ($request->isPending()) {
             $request->setStatus(CareStatus::CANCELLED);
-            $this->entityManager->flush();
+            $this->unitOfWork->flush();
         }
     }
 

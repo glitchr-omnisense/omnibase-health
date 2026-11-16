@@ -8,7 +8,11 @@ use Base\Office\Entity\Booking\Appointment;
 use Base\Office\Entity\Member;
 use Base\Office\Enum\AppointmentStatus;
 use Base\Office\Repository\MemberRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Base\Database\Repository\Finder\Criterion;
+use Base\Database\Repository\Finder\Group;
+use Base\Database\Repository\Finder\Key;
+use Base\Database\Repository\Finder\Parser;
+use Base\Database\Repository\Repositories;
 
 /**
  * Who follows a patient - their care team in the practice: the members
@@ -20,7 +24,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class CareTeam
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
+        private readonly Repositories $repositories,
         private readonly MemberRepository $members,
         private readonly PatientProfileRepository $profiles,
     ) {
@@ -30,15 +34,14 @@ class CareTeam
     public function members(User $patient): array
     {
         $members = [];
-        foreach ($this->entityManager->createQueryBuilder()
-            ->select('DISTINCT m')->from(Member::class, 'm')
-            ->innerJoin(Appointment::class, 'a', 'WITH', 'a.member = m')
-            ->andWhere('a.client = :patient')->setParameter('patient', $patient)
-            ->andWhere('a.status != :cancelled')->setParameter('cancelled', AppointmentStatus::CANCELLED->value)
-            ->andWhere('m.active = true')
-            ->orderBy('m.position', 'ASC')
-            ->getQuery()->getResult() as $member) {
-            $members[$member->getId()] = $member;
+        // The members of the patient's appointments (not a cancelled one), each once, by position.
+        foreach ($this->repositories->of(Appointment::class)->findBy([
+            'client' => Key::of($patient),
+            Group::of(Parser::SEPARATOR_AND, Criterion::of('status', AppointmentStatus::CANCELLED, Parser::OPTION_NOT_EQUAL)),
+            'member.active' => true,
+        ], ['member.position' => 'ASC']) as $appointment) {
+            $member = $appointment->getMember();
+            $members[$member->getId()] ??= $member;
         }
         $referring = $this->profiles->findOneByUser($patient)?->getReferringPhysician()?->getMember();
         if (null !== $referring && $referring->isActive()) {

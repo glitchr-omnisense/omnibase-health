@@ -3,15 +3,18 @@
 namespace Base\Health\Repository;
 
 use Base\Health\Entity\PatientProfile;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Base\Database\Repository\Finder\Criterion;
+use Base\Database\Repository\Finder\Group;
+use Base\Database\Repository\Finder\Parser;
+use Base\Database\Repository\ServiceEntityRepository;
+use Base\Database\Repository\Finders;
 
 /** @extends ServiceEntityRepository<PatientProfile> */
 class PatientProfileRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(Finders $finders)
     {
-        parent::__construct($registry, PatientProfile::class);
+        parent::__construct($finders, PatientProfile::class);
     }
 
     public function findOneByUser(?object $user): ?PatientProfile
@@ -22,9 +25,14 @@ class PatientProfileRepository extends ServiceEntityRepository
     /** @return list<PatientProfile> by name, for the staff's search */
     public function search(string $query, int $limit = 20): array
     {
-        return $this->createQueryBuilder('p')
-            ->andWhere('LOWER(p.familyName) LIKE :q OR LOWER(p.givenNames) LIKE :q')->setParameter('q', '%'.mb_strtolower(trim($query)).'%')
-            ->andWhere('p.erasedAt IS NULL')
-            ->orderBy('p.familyName', 'ASC')->setMaxResults($limit)->getQuery()->getResult();
+        $like = '%'.mb_strtolower(trim($query)).'%';
+
+        return $this->findBy([
+            Group::of(Parser::SEPARATOR_OR,
+                Criterion::of('familyName', $like, Parser::OPTION_INSENSITIVE, Parser::OPTION_PARTIAL),
+                Criterion::of('givenNames', $like, Parser::OPTION_INSENSITIVE, Parser::OPTION_PARTIAL),
+            ),
+            Group::of(Parser::SEPARATOR_AND, Criterion::of('erasedAt', null, Parser::OPTION_NULL)),
+        ], ['familyName' => 'ASC'], $limit);
     }
 }

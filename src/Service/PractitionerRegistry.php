@@ -5,7 +5,7 @@ namespace Base\Health\Service;
 use Base\Health\Entity\Practitioner;
 use Base\Office\Service\MemberRegistry;
 use Base\Service\SettingBagInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Base\Contract\UnitOfWork;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
@@ -21,7 +21,7 @@ class PractitionerRegistry
 
     public function __construct(
         private readonly MemberRegistry $members,
-        private readonly EntityManagerInterface $entityManager,
+        private readonly UnitOfWork $unitOfWork,
         private readonly SettingBagInterface $settings,
         private readonly ?HttpClientInterface $http = null,
     ) {
@@ -63,7 +63,7 @@ class PractitionerRegistry
                 $practitioner->setMssante($professional->secureEmails[0]);
             }
         }
-        $this->entityManager->flush();
+        $this->unitOfWork->flush();
 
         return $professional;
     }

@@ -5,7 +5,7 @@ namespace Base\Health\Entity;
 use Base\Health\Enum\Sector;
 use Base\Health\Repository\PractitionerRepository;
 use Base\Office\Entity\Member;
-use Doctrine\ORM\Mapping as ORM;
+use Base\Mapping as ORM;
 
 /**
  * What a member of the team is as a health professional: the profession

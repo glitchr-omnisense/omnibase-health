@@ -6,7 +6,7 @@ use App\Entity\User;
 use Base\Health\Entity\PatientProfile;
 use Base\Health\Repository\PatientProfileRepository;
 use Base\Office\Event\ClientAccountEvent;
-use Doctrine\ORM\EntityManagerInterface;
+use Base\Contract\UnitOfWork;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 /** A patient's profile, made when first needed - or when the account opens from the practice's invitation. */
@@ -14,7 +14,7 @@ class PatientProfiles
 {
     public function __construct(
         private readonly PatientProfileRepository $profiles,
-        private readonly EntityManagerInterface $entityManager,
+        private readonly UnitOfWork $unitOfWork,
     ) {
     }
 
@@ -23,8 +23,8 @@ class PatientProfiles
         $profile = $this->profiles->findOneByUser($user);
         if (null === $profile) {
             $profile = new PatientProfile($user);
-            $this->entityManager->persist($profile);
-            $this->entityManager->flush();
+            $this->unitOfWork->persist($profile);
+            $this->unitOfWork->flush();
         }
 
         return $profile;
@@ -41,7 +41,7 @@ class PatientProfiles
         $family = \count($parts) > 1 ? (string) array_pop($parts) : '';
         $profile = new PatientProfile($event->user, implode(' ', $parts), $family);
         $profile->setPhone($event->invitation->getPhone());
-        $this->entityManager->persist($profile);
-        $this->entityManager->flush();
+        $this->unitOfWork->persist($profile);
+        $this->unitOfWork->flush();
     }
 }

@@ -15,7 +15,7 @@ use Base\Health\Service\PatientProfiles;
 use Base\Office\Repository\Booking\AppointmentRepository;
 use Base\Office\Repository\Share\AccessLogRepository;
 use Base\Office\Repository\Share\DocumentRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Base\Contract\UnitOfWork;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,7 +37,7 @@ class SpaceController extends AbstractController
 {
     public function __construct(
         private readonly PatientProfiles $profiles,
-        private readonly EntityManagerInterface $entityManager,
+        private readonly UnitOfWork $unitOfWork,
         private readonly TranslatorInterface $translator,
     ) {
     }
@@ -79,7 +79,7 @@ class SpaceController extends AbstractController
                 ->setCity((string) $request->request->get('city'))
                 ->setReferringPhysician($physician?->isPhysician() ? $physician : null)
                 ->setSharingOpposition($request->request->getBoolean('sharingOpposition'));
-            $this->entityManager->flush();
+            $this->unitOfWork->flush();
             $this->addFlash('success', $this->translator->trans('space.profile.saved', [], 'health'));
 
             return $this->redirectToRoute('health_space_profile');
@@ -99,15 +99,15 @@ class SpaceController extends AbstractController
             if ($request->request->getInt('remove')) {
                 $dependent = $dependents->findOneBy(['id' => $request->request->getInt('remove'), 'holder' => $user]);
                 if ($dependent) {
-                    $this->entityManager->remove($dependent);
-                    $this->entityManager->flush();
+                    $this->unitOfWork->remove($dependent);
+                    $this->unitOfWork->flush();
                     $this->addFlash('success', $this->translator->trans('space.dependents.removed', [], 'health'));
                 }
             } elseif ('' !== trim((string) $request->request->get('givenName'))) {
                 $dependent = new Dependent($user, (string) $request->request->get('givenName'), (string) $request->request->get('familyName'), Relation::tryFrom((string) $request->request->get('relation')) ?? Relation::CHILD);
                 $dependent->setBirthDate('' !== (string) $request->request->get('birthDate') ? (\DateTimeImmutable::createFromFormat('!Y-m-d', (string) $request->request->get('birthDate')) ?: null) : null);
-                $this->entityManager->persist($dependent);
-                $this->entityManager->flush();
+                $this->unitOfWork->persist($dependent);
+                $this->unitOfWork->flush();
                 $this->addFlash('success', $this->translator->trans('space.dependents.added', ['name' => $dependent->getGivenName()], 'health'));
             }
 

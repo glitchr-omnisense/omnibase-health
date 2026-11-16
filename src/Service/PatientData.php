@@ -14,7 +14,7 @@ use Base\Office\Repository\Share\AccessLogRepository;
 use Base\Office\Repository\Share\DocumentRepository;
 use Base\Office\Share\Cipher;
 use Base\Office\Share\DocumentVault;
-use Doctrine\ORM\EntityManagerInterface;
+use Base\Contract\UnitOfWork;
 
 /**
  * A patient's rights over their data (GDPR art. 15, 17, 20): everything
@@ -37,7 +37,7 @@ class PatientData
         private readonly Cipher $cipher,
         private readonly Booker $booker,
         private readonly HomeCare $care,
-        private readonly EntityManagerInterface $entityManager,
+        private readonly UnitOfWork $unitOfWork,
     ) {
     }
 
@@ -131,7 +131,7 @@ class PatientData
             $request->setStreet('')->setCity('')->setPostalCode('')->setPhone(null)->setNotesCipher(null);
         }
         foreach ($this->dependents->findForHolder($user) as $dependent) {
-            $this->entityManager->remove($dependent);
+            $this->unitOfWork->remove($dependent);
         }
         foreach ($this->documents->findForRecipient($user, true) as $document) {
             if (null !== $document->getSender() && $document->getSender()->getId() === $user->getId()) {
@@ -141,6 +141,6 @@ class PatientData
             }
         }
         $this->profiles->findOneByUser($user)?->erase();
-        $this->entityManager->flush();
+        $this->unitOfWork->flush();
     }
 }

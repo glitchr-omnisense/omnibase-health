@@ -5,7 +5,7 @@ namespace Base\Health\Entity;
 use App\Entity\User;
 use Base\Health\Enum\Relation;
 use Base\Health\Repository\DependentRepository;
-use Doctrine\ORM\Mapping as ORM;
+use Base\Mapping as ORM;
 
 /**
  * Someone an account holder books for: a child, a parent they care for.

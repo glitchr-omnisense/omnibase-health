@@ -3,7 +3,7 @@
 namespace Base\Health\Entity;
 
 use Base\Health\Repository\FeeRepository;
-use Doctrine\ORM\Mapping as ORM;
+use Base\Mapping as ORM;
 
 /**
  * A fee as it must be displayed (French law has practitioners post their

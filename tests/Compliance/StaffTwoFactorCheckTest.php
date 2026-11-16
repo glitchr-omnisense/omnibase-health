@@ -7,9 +7,9 @@ use Base\Health\Compliance\StaffTwoFactorCheck;
 use Base\Office\Compliance\ComplianceResult;
 use Base\Service\SecurityPolicy;
 use Base\Service\SettingBagInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
-use Omnibridge\Symfony\Contract\HierarchyRoles;
+use Base\Contract\Roles;
+use Base\Database\Repository\Entities;
+use Base\Database\Repository\Repositories;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
 
@@ -87,12 +87,23 @@ final class StaffTwoFactorCheckTest extends TestCase
         $settings = $this->createStub(SettingBagInterface::class);
         $settings->method('getScalar')->willReturn(null);
 
-        $repository = $this->createStub(EntityRepository::class);
+        $repository = $this->createStub(Entities::class);
         $repository->method('findAll')->willReturn($accounts);
-        $entityManager = $this->createStub(EntityManagerInterface::class);
-        $entityManager->method('getRepository')->willReturn($repository);
+        $repositories = $this->createStub(Repositories::class);
+        $repositories->method('of')->willReturn($repository);
+        // The Roles contract over Symfony's role hierarchy (what the host's adapter answers).
+        $roles = new class($hierarchy) implements Roles {
+            public function __construct(private readonly RoleHierarchy $hierarchy)
+            {
+            }
 
-        return new StaffTwoFactorCheck($entityManager, new SecurityPolicy($settings, new HierarchyRoles($hierarchy), $requiredRoles, false), $hierarchy);
+            public function reachable(array $roles): array
+            {
+                return array_values($this->hierarchy->getReachableRoleNames($roles));
+            }
+        };
+
+        return new StaffTwoFactorCheck($repositories, new SecurityPolicy($settings, $roles, $requiredRoles, false), $hierarchy);
     }
 
     /** @param list<string> $roles */

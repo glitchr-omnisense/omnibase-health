@@ -4,7 +4,7 @@ namespace Base\Health\Entity;
 
 use App\Entity\User;
 use Base\Health\Repository\PatientProfileRepository;
-use Doctrine\ORM\Mapping as ORM;
+use Base\Mapping as ORM;
 
 /**
  * What the practice needs to know of an account to receive its holder: who

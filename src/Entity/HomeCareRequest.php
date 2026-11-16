@@ -9,7 +9,7 @@ use Base\Health\Repository\HomeCareRequestRepository;
 use Base\Office\Entity\Booking\ServiceArea;
 use Base\Office\Entity\Member;
 use Base\Office\Entity\Share\Document;
-use Doctrine\ORM\Mapping as ORM;
+use Base\Mapping as ORM;
 
 /**
  * Care asked at home: where (checked against the practice's service areas
