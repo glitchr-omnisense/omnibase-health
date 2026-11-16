@@ -24,7 +24,7 @@ by the ANS.
 ## Installation
 
 ```sh
-composer require omnibase/health          # brings omnibase/office, omnisense/omnibase 5.1 and omnibridge/symfony
+composer require omnibase/health          # brings omnibase/office, omnisense/omnibase 7.0 and omnibridge/symfony
 ```
 
 Under Symfony, enable the bundles and import the pages:
